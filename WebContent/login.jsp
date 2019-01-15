@@ -48,5 +48,35 @@
             © 2018-2019 <a href="#" target="_blank"></a>All Rights Reserved.
         </div>
     </div>
+      <script type="text/javascript">
+        layui.define('form', function (exports) {
+            var $ = layui.jquery, layer = layui.layer, form = layui.form;
+            form.on('submit(formLogin)', function (data) {
+                var _form = $(this).parents('form');
+                layer.msg('数据提交中...', { time: 500000 });
+                $.ajax({
+                    type: "POST",
+                    url: _form.attr('action'),
+                    dataType: 'json',
+                    data: _form.serialize(),
+                    success: function (res) {
+                        console.log(res);
+                        layer.msg(res.msg, {}, function () {
+                            if (res.code == 1) {
+                                if (typeof (res.url) != 'undefined' && res.url != null && res.url != '') {
+                                    location.href = res.url;
+                                } else {
+                                    location.reload();
+                                }
+                            } else {
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
 </body>
 </html>

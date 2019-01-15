@@ -12,6 +12,8 @@ import com.dao.AdminUserDao;
 import com.dao.impl.AdminUserDaoImpl;
 import com.domain.AdminUser;
 
+import net.sf.json.JSONObject;
+
 @WebServlet("/public")
 public class PublicServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -41,6 +43,7 @@ public class PublicServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.addHeader("Content-Type","application/json");
 		String action = request.getParameter("action");
+		JSONObject json = new JSONObject();
 		if (action.equals("register")) {
 		}
 		if (action.equals("login")) {
@@ -50,24 +53,26 @@ public class PublicServlet extends HttpServlet {
 			try {
 				user = dao.login(username);
 				if (user == null) {
-					System.out.println("用户不存在");
-					request.setAttribute("loginerr", "用户不存在！");
-					request.getRequestDispatcher("login.jsp").forward(request, response);
+					json.put("code", 0);
+					json.put("msg", "用户不存在");
+					response.getWriter().write(json.toString());
 				} else {
 					if (password.equals(user.getPassword())) {
-						System.out.println("登陆成功密码是"+user.getPassword());
 						HttpSession session = request.getSession();
 						session.setAttribute("username", username);
 						session.setAttribute("user_id", user.getId());
-						response.sendRedirect("student");
+						json.put("code", 1);
+						json.put("msg", "登陆成功");
+						json.put("url", "student");
+						response.getWriter().write(json.toString());
 					} else {
-						System.out.println("户名或密码不正确");
-						request.setAttribute("loginerr", "用户名或密码不正确！");
-						request.getRequestDispatcher("login.jsp").forward(request, response);
+						json.put("code", 0);
+						json.put("msg", "用户名或密码错误");
+						response.getWriter().write(json.toString());
 					}
 				}
 				System.out.println(user);
-			} catch (SQLException | ServletException | IOException e) {
+			} catch (SQLException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

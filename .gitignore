@@ -96,3 +96,7 @@ buildNumber.properties
 
 # Log Files
 *.log
+
+# Gradle files
+.gradle/
+build/

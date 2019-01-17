@@ -23,10 +23,10 @@ public class StudentDaoImpl implements StudentDao {
 	 */
 	@Override
 	public int save(Student student) throws SQLException {
-		String sql = "insert into s_user(stu_id,name,sex,professional,hobby,self,photo) values(?,?,?,?,?,?,?)";
+		String sql = "insert into s_student values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		int result = 0;
 		try {
-			result = qr.update(sql, student.getStu_id(), student.getName(), student.getSex(), student.getProfessional(),
+			result = qr.update(sql,null,student.getStu_id(),student.getPassword(),student.getName(),student.getBirthday(), student.getSex(),student.getAddress(),student.getPhone(), student.getProfessional_code(),student.getCollege_code(),
 					Arrays.toString(student.getHobby()), student.getSelf(), student.getPhoto());
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -40,7 +40,7 @@ public class StudentDaoImpl implements StudentDao {
 	 */
 	@Override
 	public int update(Student student) throws SQLException {
-		String sql = "update s_user set name=?,sex=?,professional=?,hobby=?,self=?,photo=? where id=?";
+		String sql = "update s_student set name=?,sex=?,professional=?,hobby=?,self=?,photo=? where id=?";
 		int result = 0;
 		try {
 			result = qr.update(sql, student.getName(), student.getSex(), student.getProfessional(),
@@ -58,7 +58,7 @@ public class StudentDaoImpl implements StudentDao {
 	@Override
 	public int delete(int id) throws SQLException {
 		int result = 0;
-		String sql = "delete from s_user where id=?";
+		String sql = "delete from s_student where id=?";
 		try {
 			result = qr.update(sql, id);
 		} catch (SQLException e) {
@@ -73,7 +73,7 @@ public class StudentDaoImpl implements StudentDao {
 	 */
 	@Override
 	public Student getById(int id) throws SQLException {
-		String sql = "select id,stu_id,name,sex,professional,hobby as hobbys,self,photo from s_user where id=?";
+		String sql = "select id,stu_id,name,sex,professional,hobby as hobbys,self,photo from s_student where id=?";
 		Student student = null;
 		try {
 			student = qr.query(sql, new BeanHandler<>(Student.class), id);
@@ -95,7 +95,7 @@ public class StudentDaoImpl implements StudentDao {
 	public List<Student> getAll() throws SQLException {
 		List<Student> lists = new ArrayList<Student>();
 		try {
-			String sql = "select id,stu_id,name,sex,professional,hobby as hobbys,self,photo from s_user";
+			String sql = "select id,stu_id,name,sex,professional,hobby as hobbys,self,photo from s_student";
 			 lists = qr.query(sql, new BeanListHandler<Student>(Student.class));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -111,7 +111,7 @@ public class StudentDaoImpl implements StudentDao {
 	public Long getSize() throws SQLException {
 		Long count = null;
 		try {
-			String sql = "select count(*) from s_user";
+			String sql = "select count(*) from s_student";
 			count = qr.query(sql, new ScalarHandler<Long>());
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -127,7 +127,7 @@ public class StudentDaoImpl implements StudentDao {
 	public List<Student> getByPage(int startIndex, int pageSize) throws SQLException {
 		List<Student> lists = new ArrayList<Student>();
 		try {
-			String sql = "select id,stu_id,name,sex,professional,hobby as hobbys,self,photo from s_user limit ?,?";
+			String sql = "select id,stu_id,sex,name,professional,hobby as hobbys,self,photo from s_student limit ?,?";
 			lists = qr.query(sql, new BeanListHandler<Student>(Student.class),startIndex,pageSize);
 		} catch (SQLException e) {
 			e.printStackTrace();

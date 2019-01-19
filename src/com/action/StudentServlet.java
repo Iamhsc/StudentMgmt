@@ -21,6 +21,8 @@ import com.domain.PageBean;
 import com.domain.Profession;
 import com.domain.Student;
 
+import net.sf.json.JSONObject;
+
 /**
  * Servlet implementation class StudentServlet
  */
@@ -127,9 +129,12 @@ public class StudentServlet extends HttpServlet {
 				Student stu = doForm(request);
 				try {
 					stuDao.save(stu);
-					response.sendRedirect("student");
+					JSONObject json = new JSONObject();
+					json.put("code", 1);
+					json.put("msg", "添加成功");
+					json.put("url", "student");
+					response.getWriter().write(json.toString());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else if (action.equals("update")) {
@@ -146,15 +151,15 @@ public class StudentServlet extends HttpServlet {
 	}
 
 	private Student doForm(HttpServletRequest request) {
-		Integer id = 0;
+		Integer id = null;
 		Integer stu_id = Integer.parseInt(request.getParameter("stu_id"));
 		String name = request.getParameter("name");
 		String password = stu_id.toString();
 		String birthday = request.getParameter("birthday");
 		String address = request.getParameter("address");
 		String phone = request.getParameter("phone");
-		Integer professional_code = Integer.parseInt(request.getParameter("professional_code"));
-		Integer college_code = Integer.parseInt(request.getParameter("college_code"));
+		Integer college_code = Integer.parseInt(request.getParameter("college"));
+		Integer professional_code = Integer.parseInt(request.getParameter("professional"));
 		Byte sex = Byte.parseByte(request.getParameter("sex"));
 		String[] hobby = request.getParameterValues("hobby");
 		String self = request.getParameter("self");

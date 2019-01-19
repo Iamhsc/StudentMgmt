@@ -61,7 +61,7 @@ table.stu-info td {
 					<td>${item.college}</td>
 					<td>${item.professional}</td>
 					<td>${item.hobbys}</td>
-					<td><img alt="" src="photo/${item.photo}" width="50" ></td>
+					<td><img alt="" src="${item.photo}" width="50" ></td>
 					<td>
 					<a href='upload?id=${item.id}'>上传照片</a>
 					<a href='student?action=more&id=${item.id}'>更多</a> <a 

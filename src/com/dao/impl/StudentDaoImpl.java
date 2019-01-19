@@ -73,13 +73,10 @@ public class StudentDaoImpl implements StudentDao {
 	 */
 	@Override
 	public Student getById(int id) throws SQLException {
-		String sql = "select id,stu_id,name,sex,professional,hobby as hobbys,self,photo from s_student where id=?";
+		String sql = "select s.id,s.stu_id,s.name,s.birthday,s.sex,s.address,s.phone,s.professional_code,s.college_code,s.hobbys,s.photo,c.college_name as college,p.profession_name as professional,self from s_student s left join s_college c on s.college_code= c.c_code left join s_profession p on s.professional_code=p.p_code where s.id=?";
 		Student student = null;
 		try {
 			student = qr.query(sql, new BeanHandler<>(Student.class), id);
-			String hobbys=student.getHobbys();
-			hobbys=hobbys.substring(1,hobbys.length()-1);
-			student.setHobby(hobbys.split(","));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -127,7 +124,7 @@ public class StudentDaoImpl implements StudentDao {
 	public List<Student> getByPage(int startIndex, int pageSize) throws SQLException {
 		List<Student> lists = new ArrayList<Student>();
 		try {
-			String sql = "select id,stu_id,sex,name,professional,hobby as hobbys,self,photo from s_student limit ?,?";
+			String sql = "select s.id,s.stu_id,s.name,s.birthday,s.sex,s.address,s.phone,s.professional_code,s.college_code,s.hobbys,s.photo,c.college_name as college,p.profession_name as professional from s_student s left join s_college c on s.college_code= c.c_code left join s_profession p on s.professional_code=p.p_code limit ?,?";
 			lists = qr.query(sql, new BeanListHandler<Student>(Student.class),startIndex,pageSize);
 		} catch (SQLException e) {
 			e.printStackTrace();

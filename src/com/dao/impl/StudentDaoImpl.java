@@ -40,10 +40,10 @@ public class StudentDaoImpl implements StudentDao {
 	 */
 	@Override
 	public int update(Student student) throws SQLException {
-		String sql = "update s_student set name=?,sex=?,professional=?,hobby=?,self=?,photo=? where id=?";
+		String sql = "update s_student set stu_id=?,name=?,birthday=?,sex=?,address=?,phone=?,professional_code=?,college_code=?,hobbys=?,self=?,photo=? where id=?";
 		int result = 0;
 		try {
-			result = qr.update(sql, student.getName(), student.getSex(), student.getProfessional(),
+			result = qr.update(sql, student.getStu_id(),student.getName(),student.getBirthday(), student.getSex(),student.getAddress(),student.getPhone(), student.getProfessional_code(),student.getCollege_code(),
 					Arrays.toString(student.getHobby()), student.getSelf(), student.getPhoto(), student.getId());
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -77,6 +77,9 @@ public class StudentDaoImpl implements StudentDao {
 		Student student = null;
 		try {
 			student = qr.query(sql, new BeanHandler<>(Student.class), id);
+			String hobbys=student.getHobbys();
+			hobbys=hobbys.substring(1,hobbys.length()-1);
+			student.setHobby(hobbys.split(","));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -18,6 +18,6 @@
 专业：${stu.professional }<br>
 爱好：${stu.hobbys}<br> 
 简介：${stu.self }<br>
-照片：${stu.photo }<br>
+照片： <br><img alt="" width="150" src="${stu.photo }">
 </body>
 </html>

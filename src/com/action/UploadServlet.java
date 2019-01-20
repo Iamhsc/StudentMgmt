@@ -50,10 +50,7 @@ public class UploadServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		Part part = request.getPart("fileData");
 		String id = request.getParameter("stu_id");
-		String savePath = getServletContext().getRealPath("/upload");
-		String save1=getServletContext().getRealPath("upload");
-		System.out.print("路径1"+savePath+"\n");
-		System.out.print("路径2"+save1+"\n");
+		String savePath = request.getSession().getServletContext().getRealPath("/upload");
 		File file = new File(savePath);
 		// 判断上传文件的保存目录是否存在
 		if (!file.exists() && !file.isDirectory()) {
@@ -63,18 +60,13 @@ public class UploadServlet extends HttpServlet {
 		}
 		// 获取文件名
 		String fileName = id+".jpg";
-		String filePath=savePath + File.separator + fileName;
+		String filePath= savePath+ File.separator +fileName;
 		// 把文件写到指定路径
 		part.write(filePath);
 		JSONObject json = new JSONObject();
 		json.put("code", 1);
 		json.put("msg", "上传成功");
-		json.put("path", filePath);
+		json.put("path", request.getContextPath()+"/upload/"+ fileName);
 		response.getWriter().write(json.toString());
-//	    PrintWriter out = response.getWriter();
-//	    out.println(id+".jpg<br><img src="+imgPath+" whdth='100px'>");
-//	    out.flush();
-//	    out.close();
 	}
-
 }

@@ -63,10 +63,9 @@ table.stu-info td {
 					<td>${item.hobbys}</td>
 					<td><img alt="" src="${item.photo}" width="50" ></td>
 					<td>
-					<a href='upload?id=${item.id}'>上传照片</a>
 					<a href='student?action=more&id=${item.id}'>更多</a> <a 
 						href='student?action=delete&id=${item.id}'>删除</a> <a
-						href='student?action=edit&id=' ${item.id}>编辑</a></td>
+						href='student?action=edit&id=${item.id}'>编辑</a></td>
 				</tr>
 			</c:forEach>
 	</table>

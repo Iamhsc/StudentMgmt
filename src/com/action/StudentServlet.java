@@ -55,7 +55,7 @@ public class StudentServlet extends HttpServlet {
 				List<Profession> proLs;
 				try {
 					collLs = collDao.getAll();
-					proLs=proDao.getAll();
+					proLs = proDao.getAll();
 					request.setAttribute("collLs", collLs);
 					request.setAttribute("proLs", proLs);
 					request.getRequestDispatcher("studentAdd.jsp").forward(request, response);
@@ -78,11 +78,16 @@ public class StudentServlet extends HttpServlet {
 				Integer id = Integer.parseInt(request.getParameter("id"));
 				Student stu;
 				try {
+					List<College> collLs;
+					List<Profession> proLs;
 					stu = stuDao.getById(id);
+					collLs = collDao.getAll();
+					proLs = proDao.getAll();
+					request.setAttribute("collLs", collLs);
+					request.setAttribute("proLs", proLs);
 					request.setAttribute("stu", stu);
-					request.getRequestDispatcher("edit.jsp").forward(request, response);
+					request.getRequestDispatcher("studentEdit.jsp").forward(request, response);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else if (action.equals("delete")) {
@@ -139,9 +144,18 @@ public class StudentServlet extends HttpServlet {
 				}
 			} else if (action.equals("update")) {
 				Student stu = doForm(request);
+				stu.setId(Integer.parseInt(request.getParameter("id")));
 				try {
-					stuDao.update(stu);
-					response.sendRedirect("student");
+					JSONObject json = new JSONObject();
+					if (stuDao.update(stu) > 0) {
+						json.put("code", 1);
+						json.put("msg", "更新成功");
+						json.put("url", "student");
+					} else {
+						json.put("code", 0);
+						json.put("msg", "更新失败");
+					}
+					response.getWriter().write(json.toString());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
